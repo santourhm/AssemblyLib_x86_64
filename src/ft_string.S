@@ -18,14 +18,14 @@ ft_strlen 	:
 	push	rbp		; save caller's context
 	mov 	rbp, rsp 	; create current context
 		
-	mov	r10, -1	; init the temperary register r10
+	mov	r11, -1	; init the temperary register r11
 
 _loop	:
 
-	inc	r10	
-	cmp	byte [rdi + r10*1], NULL
+	inc	r11	
+	cmp	byte [rdi + r11*1], NULL
 	jne	_loop	
-	mov rax, r10 
+	mov rax, r11 
 	pop	rbp
 	ret
 
@@ -41,60 +41,75 @@ ft_stpcpy :
 	push	rbp		; save caller's context
 	mov 	rbp, rsp 	; create current context
 	
-	mov	r10, -1	; init the temperary register r10
+	mov	r11, -1	; init the temperary register r11
 
 loop_cpy : 
 
-	inc	r10
-	mov cl, byte [rsi + r10*1]
-	mov byte [rdi + r10*1], cl	
+	inc	r11
+	mov cl, byte [rsi + r11*1]
+	mov byte [rdi + r11*1], cl	
 	test cl, cl
 	jne	loop_cpy	
 	
-	lea rax,  [rdi + r10*1] 
+	lea rax,  [rdi + r11*1] 
 	pop	rbp
 	ret
 
-ft_strcmp
-
 
 ;  Call 
-;  char *stpcpy(char *restrict dst, const char *restrict src);
-;  char *restrict dst -> rdi address of the dst string
-;  char *restrict src -> rsi address of the src string
+;  int ft_strcmp(const char *s1, const char *s2);
+;  const char *s1 -> rdi address of the s1 string
+;  const char *s2 -> rsi address of the s2 string
 
 global ft_strcmp
 
 ft_strcmp :
 
-	push	rbp		; save caller's context
+	push	rbp			; save caller's context
 	mov 	rbp, rsp 	; create current context
 	
-	mov	r10, -1	; init the temperary register r10
+loop_cmp :
+	
+    mov al, byte [rdi]     ; load *s1
+    mov bl, byte [rsi]     ; load *s2
 
-	mov rbx, 0
-	mov rcx, 0
+	cmp	al,bl
+	jne .diff
 
-loop_str1 : 
+	test al,al
+	je	.end
 
-	inc	r10
-	mov cl, byte [rsi + r10*1]
-	movzx rax, cl 
-	add rdx, rax 
-	test  cl,cl
-	jne	loop_str1	
-	mov r10, -1
+	inc	rdi
+	inc rsi
 
-loop_str2 : 
+	jmp loop_cmp
 
-	inc	r10
-	mov cl, byte [rdi + r10*1]
-	movzx rax, cl 
-	sub rdx, rax 
-	test  cl,cl
-	jne	loop_str2	
+.diff	:
 
-	mov rax, rdx 
-	pop	rbp
+	movzx	eax, al
+	movzx	ebx, bl
+	sub		eax,ebx
+	jmp .end
+	
+.end	:
+    
+	pop rbp
 	ret
 
+
+
+; Call 
+; size_t ft_write(int fd, const void * buf, size_t count);
+; 	int fd -> rdi index of the file descriptor
+;  	const void * buf -> rsi address the buffer to write on the fd
+;  	size_t count : rdx size to write 
+
+
+global ft_write
+
+ft_write :
+
+	push	rbp			; save caller's context
+	mov 	rbp, rsp 	; create current context
+	
+	
