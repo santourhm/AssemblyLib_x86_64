@@ -26,7 +26,7 @@ ft_atoi_base    :
 
             mov     rdi,        rsi
             call    ft_strlen                          
-            mov     qword [rbp - 24],    rax    ; len(base []) ->  rbp - 32
+            mov     qword [rbp - 24],    rax    ; len(base []) ->  rbp - 24
         
             xor     rbx, rbx                    ; result = 0
             xor     rcx, rcx                    ; index = 0
@@ -90,10 +90,5 @@ _char_is_valid:
 
             pop     rbp
             ret
-
-
-
-
-
 
 

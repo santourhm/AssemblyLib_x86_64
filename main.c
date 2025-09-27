@@ -122,6 +122,36 @@ void test_ft_atoi_base(void)
     print_result(1);
 }
 
+void test_ft_list_push_front(void) {
+    printf("===== Testing ft_list_push_front =====\n");
+
+    t_list *head = NULL;
+
+    // Normal case
+    ft_list_push_front(&head, "hello");
+    if (head && head->data == (void *)"hello")
+        printf("  Inserted first element successfully, data = (%s)\n", (char *) head->data);
+    else
+        printf("  Insert failed\n");
+
+    
+    ft_list_push_front(&head, "word");
+    if (head && head->data == (void *)"word")
+        printf("  Inserted first element successfully , data = (%s)\n", (char *) head->data);
+    else
+        printf("  Insert failed\n");
+
+
+    errno = 0;
+   
+    head = NULL;
+    ft_list_push_front(&head, "world");
+    if (head == NULL && errno == ENOMEM)
+        printf("  Correctly reported malloc failure (errno = %d)\n", errno);
+    else
+        printf("  Error handling failed (errno = %d)\n", errno);
+}
+
 int main(void) 
 {
     test_strlen();
@@ -130,5 +160,6 @@ int main(void)
     test_write();
     test_strdup();
     test_ft_atoi_base();
+    test_ft_list_push_front();
     return 0;
 }
