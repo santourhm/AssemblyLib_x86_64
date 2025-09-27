@@ -152,6 +152,46 @@ void test_ft_list_push_front(void) {
         printf("  Error handling failed (errno = %d)\n", errno);
 }
 
+
+void test_ft_list_size(void) {
+    printf("===== Testing ft_list_push_front =====\n");
+
+    t_list *head = NULL;
+
+   
+    ft_list_push_front(&head, "hello");
+    if (head && head->data == (void *)"hello")
+        printf("  Inserted first element successfully, data = (%s)\n", (char *) head->data);
+    else
+        printf("  Insert failed\n");
+
+    
+    ft_list_push_front(&head, "word");
+    if (head && head->data == (void *)"word")
+        printf("  Inserted first element successfully , data = (%s)\n", (char *) head->data);
+    else
+        printf("  Insert failed\n");
+
+
+    int     size = ft_list_size(head);
+    printf("calculated size = (%d) \n" ,size);
+    if(size != 2)
+    {
+        print_result(0);
+        return;
+    }
+    t_list *head_2 = NULL;
+    size = ft_list_size(head_2);
+    printf("calculated size = (%d) , for null linked list \n" ,size);
+    if(size != 0)
+    {
+        print_result(0);
+        return;
+    }
+
+    print_result(1);
+}
+
 int main(void) 
 {
     test_strlen();
@@ -161,5 +201,6 @@ int main(void)
     test_strdup();
     test_ft_atoi_base();
     test_ft_list_push_front();
+    test_ft_list_size();
     return 0;
 }
